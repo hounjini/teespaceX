@@ -1,0 +1,27 @@
+{
+    "manifest_version": 2,
+    
+    "name": "TeeSpaceX",
+    "description": "TeeSpaceX",
+    "version": "1.0",
+    
+    "browser_action": {
+        "default_icon": "icon.png",
+        "default_popup": "popup.html"
+    },
+    "permissions": [
+        "tabs",
+		"webRequest",
+        "*://tmax.teespace.net/",
+        "storage"
+    ],
+
+	"background": {
+	    "scripts": ["background.js" ]
+    },
+    
+    "content_scripts": [{
+    	"matches" : [ "*://tmax.teespace.net/*" ],
+    	"js" : [ "injected.js", "jquery-3.2.1.min.js" ]
+	}]
+}
