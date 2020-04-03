@@ -11,6 +11,7 @@
     },
     "permissions": [
         "tabs",
+        "activeTab",
 		"webRequest",
         "*://tmax.teespace.net/",
         "storage"
@@ -22,6 +23,7 @@
     
     "content_scripts": [{
     	"matches" : [ "*://tmax.teespace.net/*" ],
-    	"js" : [ "injected.js", "jquery-3.2.1.min.js" ]
+    	"all_frames": true,
+    	"js" : [ "injected.js", "jquery-3.4.1.js" ]
 	}]
 }

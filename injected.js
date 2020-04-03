@@ -1,3 +1,10 @@
+
+function replaceSlang() {
+    var currentChat = $("#talk-footer__input").text()
+    var newStr = currentChat.replace("1234", "뀨뀨")
+    $("#talk-footer__input").text(newStr)
+}
+
 let visibility = []
 
 chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
@@ -35,6 +42,20 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
             ret[i] = {name : _name, visible : _visible, id : _id}
         }
         sendResponse({res : "finished", rooms : ret });
+    } else if(request.action == "enterRoom") {
+        $("#talk-footer__send-button").focus(function() {
+            replaceSlang()
+        })
+        
+        $("#talk-footer__input").on("propertychange change keyup keydown paste input", function (key) {
+            console.log(key)
+            console.log(key.originalEvent.keyCode)
+            if (key.originalEvent.keyCode == 13) {
+                replaceSlang()
+                return false
+            }
+        })
+        sendResponse({res : "finished"})
     }
 });
 
