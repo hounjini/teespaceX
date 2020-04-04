@@ -11,19 +11,21 @@
     },
     "permissions": [
         "tabs",
+        "storage",
         "activeTab",
 		"webRequest",
-        "*://tmax.teespace.net/",
-        "storage"
+        "*://tmax.teespace.net/*",
+        "webRequestBlocking"
     ],
 
 	"background": {
-	    "scripts": ["background.js" ]
+	    "scripts": [ "background.js" ]
     },
     
     "content_scripts": [{
     	"matches" : [ "*://tmax.teespace.net/*" ],
     	"all_frames": true,
     	"js" : [ "injected.js", "jquery-3.4.1.js" ]
-	}]
+	}],
+    "web_accessible_resources": [ "talkFooter.200404.js", "talk.addon.js", "talkContent.200404.js", "base64.js" ]
 }

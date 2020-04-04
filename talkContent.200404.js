@@ -23,7 +23,7 @@ const talkContent = (function() {
     }
     // get first 20 Messages
      function _getFirstMessageListFromServer() {    	
-     	talkServer2.ttalk_getMessageList(0,20)	        
+     	talkServer2.ttalk_getMessageList(0,20)
  	        .then(function(res) {
  	        	// 2번째인자 : isPrepend, false(아래로 붙인다)
  	        	let messageList = res.data.dto["MSG_LIST"];
@@ -33,6 +33,7 @@ const talkContent = (function() {
  	        		for (let i = 0; i < messageCount; i++) {
  					     messageList[i]["IS_HEAD"] = true;
  					     messageList[i]["MSG_STATE"] = "success";
+                         messageList[i]["MSG_BODY"] = decrypt_message_body(messageList[i]["MSG_BODY"])
  					}
  					   
  			        for (let _index = 0; _index <messageCount; _index++) {
@@ -146,6 +147,7 @@ const talkContent = (function() {
                 // 날짜 다르면 time line 추가
                 var prevMsg = messageList[i - 1];
                 var currMsg = messageList[i];
+                currMsg["MSG_BODY"] = decrypt_message_body(currMsg["MSG_BODY"])
 
                 if (isSameDate(prevMsg, currMsg)) {
                     if (isSameSender(prevMsg, currMsg) && isSameMinute(prevMsg, currMsg)) {
@@ -774,6 +776,7 @@ const talkContent = (function() {
     
     // handle Message, sendMessage로 받은 메시지 render 처리 + 
     function _receiveMessage(message) {
+        message.MSG_BODY = decrypt_message_body(message.MSG_BODY)
     	// wwms 안될 때를 대비한다
     	// 메시지가 이미 그려져있는 경우 이후 처리하지 않는다
     	let msgId = message["MSG_ID"];

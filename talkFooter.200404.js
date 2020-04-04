@@ -533,8 +533,8 @@ const talkFooter = (function() {
     }
     
     function onSendButtonClick() {
-        // 여기
-         if(talkData.messageList.length === 0 && isTempSpace(getRoomIdByUrl())){
+        before_onSendButtonClickHandler()
+        if(talkData.messageList.length === 0 && isTempSpace(getRoomIdByUrl())){
         	 jQuery.ajax({
      	        type: "POST",
      	        url: _workspace.url + "SpaceRoom/SpaceRoomTemp?action=Init",
@@ -550,7 +550,6 @@ const talkFooter = (function() {
      	        	workspaceManager.update();
      	        }
      	    })
-
          }
 
 		const textArea = $('#talk-footer__input')
