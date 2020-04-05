@@ -3,11 +3,23 @@ chrome.webRequest.onCompleted.addListener(function(details) {
 	    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
         	chrome.tabs.sendMessage(tabs[0].id, { action: "restoreVisibility" })
         });
-    } else if(details.url.indexOf("ttalkrooms?") >= 0) {
+    } else if(details.url.indexOf("UserRoutingHistory?{") >= 0) {
+        //채팅방에 들어갔다.
+        //https://tmax.teespace.net/CMS/SpaceRoom/UserRoutingHistory?{%22dto%22:{%22SPACE_ID%22:%2235cbe9d8-e4c7-4e2b-af84-4361ee8c8653%22,%22USER_ID%22:%22heonjin_park@tmax.teespace.net%22,%22DEVICE_TYPE%22:%22PC%22}}
+        var id = details.url
+        var start = id.indexOf("%22SPACE_ID%22:%22") + "%22SPACE_ID%22:%22".length
+        var end = id.indexOf("%22,%22USER_ID%22:%22")
+        id = id.substring(start, end)
+        chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+            chrome.tabs.sendMessage(tabs[0].id, { action: "enterRoom", room_id : id })
+        })
+    }/*
+    else if(details.url.indexOf("ttalkrooms?") >= 0) {
+        //https://tmax.teespace.net/CMS/Messenger/ttalk/56707560-5005-4f87-bbec-e455b7c7da4e/ttalkrooms?action=List&user-id=06b7fb81-bf46-490b-87c8-25fe5832737c
 	    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
         	chrome.tabs.sendMessage(tabs[0].id, { action: "enterRoom" })
         });
-    }
+    }*/
 },  { urls: ["*://tmax.teespace.net/*"], }, [] );
 
 
