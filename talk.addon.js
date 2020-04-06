@@ -36,7 +36,7 @@ const myDecipher = decipher(SALT)
 */
 
 function Base64Encode(str, encoding = 'utf-8') {
-    var bytes = new (TextEncoder || TextEncoderLite)(encoding).encode(str);        
+    var bytes = new (TextEncoder || TextEncoderLite)(encoding).encode(str);
     return base64js.fromByteArray(bytes);
 }
 
@@ -49,13 +49,8 @@ function Base64Decode(str, encoding = 'utf-8') {
 function before_onSendButtonClickHandler() {
     var is_good = true
     var plain_text = $('#talk-footer__input').text()
-    console.log("[SEND] plain text - " + plain_text)
-     
     var encryption = $("#current_room_status_encryption").text()
     if(encryption == "encrypted") {
-        console.log("[SEND] base64 text - " + Base64Encode(plain_text))
-        console.log("[SEND] encrypted text - " + myCipher(Base64Encode(plain_text)))
-        console.log("[SEND] final text - " + PAYLOAD_HEADER + myCipher(Base64Encode(plain_text)))
         $('#talk-footer__input').text(PAYLOAD_HEADER + myCipher(Base64Encode(plain_text)))
     }
 }
@@ -67,15 +62,10 @@ function decrypt_message_body(msg) {
 채팅에서도 쓰고...하기위해서 여기는 그냥 무조건 payload있으면 decode하자.
 */
     msg_decrypted = msg;
-    console.log("[RECV] recv text - " + msg)
     if(msg && msg.indexOf(PAYLOAD_HEADER) == 0) {
         //this is encrypted text.
-        console.log("[RECV] recv text has payload")
         var length = msg.length
         var msg_to_decrypt = msg.substring(PAYLOAD_HEADER.length, length)
-        console.log("[RECV] text to decrypt - " + msg_to_decrypt)
-        console.log("[RECV] text decrypted - " + myDecipher(msg_to_decrypt))
-        console.log("[RECV] base64 decoded - " + Base64Decode(myDecipher(msg_to_decrypt)))
         msg_decrypted = Base64Decode(myDecipher(msg_to_decrypt))
     }
     return msg_decrypted
